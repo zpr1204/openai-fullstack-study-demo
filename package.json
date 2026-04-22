@@ -1,0 +1,32 @@
+{
+  "name": "openai-fullstack-study-demo",
+  "version": "1.0.0",
+  "private": true,
+  "egg": {
+    "declarations": false
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run dev:egg\" \"npm run dev:web\"",
+    "dev:egg": "egg-bin dev --port 7001",
+    "dev:web": "vite",
+    "build": "vite build",
+    "start": "egg-scripts start --title=openai-study-egg --port=7001 --daemon",
+    "stop": "egg-scripts stop --title=openai-study-egg"
+  },
+  "dependencies": {
+    "@openai/agents": "^0.8.5",
+    "dotenv": "^17.4.2",
+    "egg": "^3.31.0",
+    "egg-scripts": "^3.1.0",
+    "openai": "^6.34.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.1",
+    "egg-bin": "^6.9.0",
+    "vite": "^5.4.21"
+  }
+}

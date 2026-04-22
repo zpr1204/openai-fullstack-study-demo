@@ -1,0 +1,8 @@
+node_modules
+dist
+app/public
+logs
+run
+.env
+.DS_Store
+npm-debug.log*
