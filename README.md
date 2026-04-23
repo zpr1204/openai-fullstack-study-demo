@@ -23,6 +23,10 @@
 8. 向量 Embeddings：理解 RAG / 语义检索的基础，只做“找资料”。
 9. RAG 检索增强：把“先检索，再生成”完整串起来。
 
+另外还附带 1 个独立页面：
+
+- `Vercel AI SDK Chat`：使用 `@ai-sdk/react` 的 `useChat` 和 Egg 流式接口，做一个最小聊天页，适合理解“前端聊天状态 + 后端流式响应”。
+
 ## 项目结构
 
 ```text
@@ -81,6 +85,7 @@ npm run dev
 
 - 前端页面默认在 `http://localhost:5173`
 - Egg API 默认在 `http://localhost:7001`
+- Vercel AI SDK 聊天页在 `http://localhost:5173/vercel-ai-chat`
 
 ## 推荐阅读顺序
 
@@ -102,6 +107,13 @@ npm run dev
    [RagSection.jsx](/Users/zengpiaorong/flat/openai/web/src/components/modules/RagSection.jsx)
 
 这样会更符合“先会调用，再会约束，再会接工具，再会做产品”的学习曲线。
+
+如果你想专门学聊天产品的最小实现，可以直接看：
+
+- 前端路由：`/vercel-ai-chat`
+- [VercelAiChatPage.jsx](/Users/zengpiaorong/flat/openai/web/src/pages/VercelAiChatPage.jsx)
+- [app/controller/api.js](/Users/zengpiaorong/flat/openai/app/controller/api.js)
+- [app/service/openai.js](/Users/zengpiaorong/flat/openai/app/service/openai.js)
 
 ## 模型选择建议
 
@@ -177,6 +189,16 @@ RAG 的第一步往往不是“问模型”，而是“先找相关资料”。
 
 这是一套最小可理解、最适合入门的 RAG 实现。
 
+### 9. Vercel AI SDK 聊天页值得看什么？
+
+1. 前端用 `useChat` 管理消息状态
+2. 输入框文本自己用 React `useState` 管理
+3. `DefaultChatTransport` 指向你自己的 Egg 接口
+4. 后端用 `streamText` 产生流式结果
+5. 再通过 `pipeUIMessageStreamToResponse` 把消息流直接写回浏览器
+
+这页特别适合你理解：聊天产品不只是“调一下模型”，而是前后端一起维护流式会话体验。
+
 ## 官方文档索引
 
 - [Quickstart](https://platform.openai.com/docs/quickstart/overview/getting-started)
@@ -189,6 +211,8 @@ RAG 的第一步往往不是“问模型”，而是“先找相关资料”。
 - [Agents Quickstart](https://developers.openai.com/api/docs/guides/agents/quickstart)
 - [Streaming](https://platform.openai.com/docs/guides/streaming-responses)
 - [Embeddings](https://developers.openai.com/api/docs/models/text-embedding-3-small)
+- [Vercel AI SDK Chatbot](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot)
+- [Vercel AI SDK OpenAI Provider](https://ai-sdk.dev/providers/ai-sdk-providers/openai)
 
 ## 下一步你可以怎么练
 

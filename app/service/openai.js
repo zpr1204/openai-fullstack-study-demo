@@ -181,6 +181,33 @@ class OpenaiStudyService extends Service {
     };
   }
 
+  async createVercelAiChatStream(messages = []) {
+    // Vercel AI SDK 当前是 ESM 形态。
+    // Egg 项目还是 CommonJS，所以这里用动态 import，避免 require 失败。
+    const { convertToModelMessages, streamText } = await import('ai');
+    const { openai } = await import('@ai-sdk/openai');
+
+    // useChat 发到后端的是 UIMessage。
+    // convertToModelMessages 会把前端消息结构转换成模型更容易消费的格式。
+    const modelMessages = await convertToModelMessages(Array.isArray(messages) ? messages : []);
+
+    // streamText 返回的是一个“流式结果对象”，不是一次性完整字符串。
+    // Controller 层会把它直接 pipe 给 Node response，让 React 聊天页边收边渲染。
+    return streamText({
+      model: openai(this.textModel),
+      system:
+        '你是一名耐心的 AI 全栈导师。请用中文回答，适合 React + Node 开发者入门学习。回答尽量清晰、分点、少术语黑话。',
+      messages: modelMessages,
+      providerOptions: {
+        openai: {
+          reasoningEffort: 'low',
+          textVerbosity: 'medium',
+          store: false,
+        },
+      },
+    });
+  }
+
   async createStructured(topic) {
     const StudyPlanSchema = z.object({
       topic: z.string(),

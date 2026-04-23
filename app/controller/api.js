@@ -58,6 +58,22 @@ class ApiController extends Controller {
     }
   }
 
+  async vercelAiChat() {
+    const { ctx, service } = this;
+
+    try {
+      const result = await service.openai.createVercelAiChatStream(ctx.request.body?.messages);
+
+      // 交给 AI SDK 把 UIMessage SSE 流直接写回浏览器。
+      // 这正是 useChat 默认期望的响应格式。
+      ctx.respond = false;
+      result.pipeUIMessageStreamToResponse(ctx.res);
+    } catch (error) {
+      ctx.status = 500;
+      ctx.body = { error: error.message };
+    }
+  }
+
   async conversation() {
     const { ctx, service } = this;
 

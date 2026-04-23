@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function getSummaryText(health) {
   if (!health) {
     return "正在检查本地服务状态...";
@@ -20,6 +22,11 @@ export default function HeroSection({ health }) {
           这个页面不是单纯的 demo，而是一份可运行的学习地图。现在后端已经切到
           Egg.js，你可以一边点按钮测试接口，一边对照 Controller / Service 的分层理解每个知识点。
         </p>
+        <div className="hero-actions">
+          <Link className="link-pill" to="/vercel-ai-chat">
+            打开 Vercel AI SDK 聊天页
+          </Link>
+        </div>
       </div>
       <aside className="hero-panel">
         <div className="status-pill">

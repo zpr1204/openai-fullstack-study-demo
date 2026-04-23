@@ -29,6 +29,12 @@
 - 这个示例不做检索，属于“纯 LLM”调用
 - 返回值里最常直接使用的是 `response.output_text`
 
+补充一个很适合前端开发者的独立页面：
+
+- 前端路由：`/vercel-ai-chat`
+
+它不是一个额外 API 能力点，而是把“流式聊天 UI + 后端 streaming 接口”整合成一个可直接理解的页面。
+
 ### 2. 结构化输出
 
 文件位置：`app/service/openai.js` 的 `createStructured`
@@ -125,7 +131,23 @@
 - 它的重点是让回答更贴近你自己的资料
 - 真实业务会继续增加 chunk、metadata、rerank、引用展示等能力
 
-## 三、学 OpenAI 的建议顺序
+## 三点五、额外建议你看的聊天页
+
+文件位置：
+
+- 前端路由：`/vercel-ai-chat`
+- `web/src/pages/VercelAiChatPage.jsx`
+- `app/controller/api.js` 的 `vercelAiChat`
+- `app/service/openai.js` 的 `createVercelAiChatStream`
+
+这一页特别适合 React 开发者，因为你能同时看到：
+
+- 前端 `useChat` 如何管理消息列表
+- 为什么 AI SDK 6 不再帮你管理 input state
+- `DefaultChatTransport` 是怎么把请求发到你自己的后端
+- 后端如何用 `streamText` + `pipeUIMessageStreamToResponse` 做流式聊天
+
+## 四、学 OpenAI 的建议顺序
 
 如果你现在是 React + Node 开发者，建议按这个顺序学：
 
@@ -147,7 +169,7 @@
 - RAG 会帮你把“语义检索”和“最终生成”真正串起来
 - 最后你再做更复杂的工作流，会更知道“工具、上下文、状态、handoff”分别在解决什么
 
-## 四、官方文档中的重点结论
+## 五、官方文档中的重点结论
 
 基于 **2026-04-22** 检索到的官方文档：
 
@@ -155,13 +177,14 @@
 - Compare Models 页面显示：`gpt-5.4-mini` 支持 `Streaming`、`Function calling`、`Structured outputs` 和 `Image input`。
 - Embeddings 模型里：`text-embedding-3-small` 更便宜，适合入门和大多数原型；`text-embedding-3-large` 更强，适合效果优先。
 
-## 五、建议你接下来做的 3 个升级练习
+## 六、建议你接下来做的 3 个升级练习
 
 ### 练习 1：做一个最小聊天页
 
 - 把文本生成和流式输出合并成一个聊天对话框
 - 给每条消息加 role
 - 让前端能看到“用户消息”和“AI 消息”
+- 再对照 `/vercel-ai-chat` 这页理解 AI SDK 是怎么帮你接管这件事的
 
 ### 练习 2：做一个最小知识库问答
 
@@ -176,7 +199,7 @@
 - 可以接 Notion、数据库、商品系统、订单系统、CMS
 - 这样你就会真正体会到 AI 和业务系统集成的方式
 
-## 六、对转型 AI 全栈的一个现实建议
+## 七、对转型 AI 全栈的一个现实建议
 
 你不需要一开始就学“特别大的 Agent 框架”。
 
