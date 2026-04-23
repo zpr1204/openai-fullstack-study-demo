@@ -15,9 +15,9 @@
 - `OPENAI_API_KEY` 只应该放在后端环境变量里。
 - 浏览器不能直接暴露私钥。
 
-## 二、最值得先学的 7 个能力
+## 二、最值得先学的 9 个能力
 
-### 1. 文本生成
+### 1. 纯 LLM 问答
 
 文件位置：`app/service/openai.js` 的 `createText`
 
@@ -26,6 +26,7 @@
 - `model` 决定能力、价格、延迟
 - `system` 消息通常负责角色和输出风格
 - `user` 消息通常负责真正需求
+- 这个示例不做检索，属于“纯 LLM”调用
 - 返回值里最常直接使用的是 `response.output_text`
 
 ### 2. 结构化输出
@@ -51,7 +52,22 @@
 5. 用 `function_call_output` 把结果传回模型
 6. 再拿最终自然语言结果
 
-### 4. 会话状态
+### 4. MCP
+
+文件位置：`app/service/openai.js` 的 `createMcpExample`
+
+这个模块讲的是 OpenAI API 里的远程 MCP server，不是编辑器里的 Docs MCP。
+
+你需要重点理解：
+
+- `tools` 里可以传 `type: "mcp"`，把远程 MCP server 暴露给模型
+- 模型会先拿到 `mcp_list_tools`
+- 真正调用远程工具时，会出现 `mcp_call`
+- 敏感操作可以结合 `require_approval` 做审批
+
+这个例子里，我用了 OpenAI 官方托管的 Docs MCP server 来做最小学习案例。
+
+### 5. 会话状态
 
 文件位置：`app/service/openai.js` 的 `createConversation`
 
@@ -61,7 +77,7 @@
 - 用 `previous_response_id` 可以把多轮上下文串起来
 - 这对聊天助手、AI Copilot、工作流追问很关键
 
-### 5. Agents SDK
+### 6. Agents SDK
 
 文件位置：`app/service/openai.js` 的 `createAgentExample`
 
@@ -71,7 +87,7 @@
 - 可以用 triage agent 把问题路由给 specialist agent
 - 适合做复杂顾问系统、任务分流、多角色协作入口
 
-### 6. 流式输出
+### 7. 流式输出
 
 文件位置：`app/controller/api.js` 的 `stream` + `app/service/openai.js` 的 `createTextStream`
 
@@ -81,7 +97,7 @@
 - 可以逐步渲染，提高交互体验
 - 聊天产品几乎都会用到
 
-### 7. Embeddings
+### 8. Embeddings
 
 文件位置：`app/service/openai.js` 的 `createEmbeddings`
 
@@ -91,6 +107,24 @@
 - 它最常用于“先找相关内容，再让大模型回答”
 - 所以它是 RAG、知识库问答、搜索增强的地基
 
+### 9. RAG
+
+文件位置：`app/service/openai.js` 的 `createRagExample`
+
+这个示例故意写成最小版本，方便你一眼看懂：
+
+1. 先准备本地知识片段
+2. 用户问题和知识片段一起做 embeddings
+3. 用相似度找出最相关的片段
+4. 再把这些片段拼回 prompt
+5. 最后才调用大模型生成回答
+
+你需要重点理解：
+
+- RAG 不是新模型，而是一种“检索 + 生成”的工程组合
+- 它的重点是让回答更贴近你自己的资料
+- 真实业务会继续增加 chunk、metadata、rerank、引用展示等能力
+
 ## 三、学 OpenAI 的建议顺序
 
 如果你现在是 React + Node 开发者，建议按这个顺序学：
@@ -98,15 +132,19 @@
 1. `Responses API`
 2. `Structured Outputs`
 3. `Function Calling`
-4. `Agents SDK`
-5. `Streaming`
-6. `Embeddings`
-7. 再往上做 RAG / 更复杂的工作流
+4. `MCP`
+5. `Agents SDK`
+6. `Streaming`
+7. `Embeddings`
+8. `RAG`
+9. 再往上做更复杂的工作流
 
 原因很简单：
 
 - 前 4 个更接近日常产品功能和工程组织
+- MCP 会帮你理解“标准化远程工具协议”和“本地 function calling”之间的分工
 - Embeddings 会带你进入检索和知识库
+- RAG 会帮你把“语义检索”和“最终生成”真正串起来
 - 最后你再做更复杂的工作流，会更知道“工具、上下文、状态、handoff”分别在解决什么
 
 ## 四、官方文档中的重点结论
@@ -131,6 +169,7 @@
 - 后端把文本做 embeddings
 - 用户提问时先做相似度召回
 - 再把召回结果拼进 prompt 调用模型
+- 前端把命中的片段也展示出来，方便观察回答依据
 
 ### 练习 3：把函数调用接到真实业务
 

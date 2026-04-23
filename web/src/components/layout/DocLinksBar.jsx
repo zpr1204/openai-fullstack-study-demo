@@ -20,6 +20,14 @@ const docLinks = [
     url: "https://developers.openai.com/api/docs/guides/function-calling"
   },
   {
+    title: "Docs MCP",
+    url: "https://platform.openai.com/docs/docs-mcp"
+  },
+  {
+    title: "MCP & Connectors",
+    url: "https://developers.openai.com/api/docs/guides/tools-connectors-mcp"
+  },
+  {
     title: "Agents Quickstart",
     url: "https://developers.openai.com/api/docs/guides/agents/quickstart"
   },

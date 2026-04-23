@@ -5,9 +5,9 @@ import { requestJson } from "../../lib/api.js";
 
 export default function TextGenerationSection({ setError }) {
   const [textPrompt, setTextPrompt] = useState(
-    "请用中文解释：为什么 Responses API 是现在的新项目首选？"
+    "请用中文解释：纯 LLM 调用适合解决哪些问题？"
   );
-  const [textResult, setTextResult] = useState("");
+  const [textResult, setTextResult] = useState(null);
 
   async function runTextExample() {
     setError("");
@@ -15,23 +15,28 @@ export default function TextGenerationSection({ setError }) {
       method: "POST",
       body: JSON.stringify({ prompt: textPrompt })
     });
-    setTextResult(data.outputText);
+    setTextResult(data);
   }
 
   return (
     <SectionCard
-      title="1. 基础文本生成"
-      subtitle="Responses API"
+      title="1. 纯 LLM 问答"
+      subtitle="LLM Basics"
       path="app/controller/api.js + app/service/openai.js"
       points={[
         "理解最基本的 prompt -> response 流程",
-        "学会为什么新项目优先选 Responses API",
-        "感受 system + user 消息的基本结构"
+        "这个示例不做检索，回答只依赖模型参数知识",
+        "适合先把提示词、system / user 角色和返回结构学明白"
       ]}
     >
       <textarea value={textPrompt} onChange={(event) => setTextPrompt(event.target.value)} />
-      <button onClick={runTextExample}>运行文本生成</button>
-      {textResult ? <OutputPanel label="模型输出" value={textResult} /> : null}
+      <button onClick={runTextExample}>运行纯 LLM 示例</button>
+      {textResult ? (
+        <>
+          <OutputPanel label="模型输出" value={textResult.outputText} />
+          <OutputPanel label="知识边界" value={textResult.knowledgeBoundary} />
+        </>
+      ) : null}
     </SectionCard>
   );
 }

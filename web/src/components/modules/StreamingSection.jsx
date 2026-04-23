@@ -43,7 +43,7 @@ export default function StreamingSection({ setError }) {
 
   return (
     <SectionCard
-      title="6. 流式输出"
+      title="7. 流式输出"
       subtitle="Streaming"
       path="app/controller/api.js + app/service/openai.js"
       points={[

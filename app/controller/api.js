@@ -25,7 +25,6 @@ class ApiController extends Controller {
     }
   }
 
-
   async structured() {
     const { ctx, service } = this;
 
@@ -42,6 +41,17 @@ class ApiController extends Controller {
 
     try {
       ctx.body = await service.openai.createFunctionCalling(ctx.request.body?.question);
+    } catch (error) {
+      ctx.status = 500;
+      ctx.body = { error: error.message };
+    }
+  }
+
+  async mcp() {
+    const { ctx, service } = this;
+
+    try {
+      ctx.body = await service.openai.createMcpExample(ctx.request.body?.question);
     } catch (error) {
       ctx.status = 500;
       ctx.body = { error: error.message };
@@ -124,6 +134,17 @@ class ApiController extends Controller {
 
     try {
       ctx.body = await service.openai.createEmbeddings(ctx.request.body?.query);
+    } catch (error) {
+      ctx.status = 500;
+      ctx.body = { error: error.message };
+    }
+  }
+
+  async rag() {
+    const { ctx, service } = this;
+
+    try {
+      ctx.body = await service.openai.createRagExample(ctx.request.body?.question);
     } catch (error) {
       ctx.status = 500;
       ctx.body = { error: error.message };

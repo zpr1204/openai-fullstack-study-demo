@@ -20,7 +20,7 @@ export default function AgentsSection({ setError }) {
 
   return (
     <SectionCard
-      title="5. Agents SDK 专家分流"
+      title="6. Agents SDK 专家分流"
       subtitle="Agents Quickstart"
       path="app/controller/api.js + app/service/openai.js"
       points={[

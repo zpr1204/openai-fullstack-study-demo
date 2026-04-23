@@ -20,13 +20,13 @@ export default function EmbeddingsSection({ setError }) {
 
   return (
     <SectionCard
-      title="7. 向量 Embeddings"
+      title="8. 向量 Embeddings"
       subtitle="Semantic Search"
       path="app/controller/api.js + app/service/openai.js"
       points={[
         "理解 embedding 是文本的向量表示",
         "学会 query 与文档向量的相似度比较",
-        "这是 RAG、语义检索、知识库问答的底层基石"
+        "这里只做检索排序，它是 RAG 的底层基石，但还不是完整 RAG"
       ]}
     >
       <input
